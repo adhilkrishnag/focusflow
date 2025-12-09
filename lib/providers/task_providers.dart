@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import '../models/task.dart';
 import '../repositories/task_repository.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import '../services/notifications.dart';
 
 final tasksProvider = AsyncNotifierProvider<Tasks, List<Task>>(Tasks.new);
 
@@ -39,7 +40,7 @@ class Tasks extends AsyncNotifier<List<Task>> {
   }
 
   void _schedule(Task task) async {
-    final notif = FlutterLocalNotificationsPlugin();
+    final notif = flutterLocalNotificationsPlugin;
     final due = task.dueDate!;
     if (due.isBefore(DateTime.now())) return;
 
@@ -65,6 +66,15 @@ class Tasks extends AsyncNotifier<List<Task>> {
           UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
+}
+
+final activeTaskProvider =
+    NotifierProvider<ActiveTask, String?>(ActiveTask.new);
+
+class ActiveTask extends Notifier<String?> {
+  @override
+  String? build() => null;
+  void set(String? uuid) => state = uuid;
 }
 
 final completedPercentageProvider = FutureProvider<int>((ref) async {

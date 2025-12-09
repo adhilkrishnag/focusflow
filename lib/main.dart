@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'services/notifications.dart';
+
 import 'models/task.dart';
 import 'providers/theme_provider.dart';
 import 'repositories/task_repository.dart';
@@ -20,6 +22,7 @@ void main() async {
   final taskBox = await Hive.openBox<Task>('tasks');
 
   final sharedPrefs = await SharedPreferences.getInstance();
+  await initNotifications();
 
   runApp(
     ProviderScope(
