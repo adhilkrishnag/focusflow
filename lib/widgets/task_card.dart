@@ -60,7 +60,18 @@ class TaskCard extends ConsumerWidget {
             subtitle: task.dueDate == null ? null : Text(DateFormat('MMM dd, hh:mm a').format(task.dueDate!)),
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                // Pomodoro count badge
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.timer, size: 16, color: Colors.grey),
+                    const SizedBox(width: 6),
+                    Text('${task.pomodoros}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                  ],
+                ),
+                const SizedBox(height: 8),
                 Icon(Icons.flag, color: priorityColor, size: 28),
                 Text(task.category, style: const TextStyle(fontSize: 10)),
               ],
